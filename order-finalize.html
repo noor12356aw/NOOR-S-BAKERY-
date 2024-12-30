@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Finalization</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Finalization</title>
+    <link rel="stylesheet" href="cake.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https;//fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lobster&display=swap">
+
+
+</head>
+<body>
+
+    <header> 
+        <a href="cake.html" class="logo"> <span>B</span>AKERY</a>
+        <div class="fa-solid fa-bars" id=menu-icon></div>
+        <ul class="navlist">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#categories">Categories</a></li>
+            <li><a href="#cakes">Cakes</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#contact">Contact Us </a></li> 
+        </ul>
+        <div class="top-icon">
+        <i class="fa-solid fa-heart" id="icon1"></i>
+        <i class="fa-solid fa-cart-shopping" id="icon2"></i>
+        
+        </div>
+        
+          </header>
+
+    <h1 class="order-finalize">Choose Products</h1>
+    
+    
+    <button  class="items" onclick="addItem('Cake', 20)"> Cake ($20)</button>
+    <button class="items" onclick="addItem('Cheese Cake', 9)"> Cheesecake($9)</button>
+    
+    <button class="items"  onclick="addItem('CupCake', 8)">CupCake ($8)</button>
+    <button class="items" onclick="addItem('Cookies', 12)">Cookies ($12)</button>
+    
+    <button  class="items" onclick="addItem('Cake Rolls', 7)">Cake Rolls ($7)</button>
+    <button class="items" onclick="addItem('Cake Pops', 11)">Cake Pops ($11)</button>
+    <button class="items" onclick="addItem('Croissant', 8)">Croissant ($8)</button>
+    <button  class="items" onclick="addItem('Waffle', 6)">Waffle($6)</button>
+    <button  class="items" onclick="addItem('Donuts', 17)">Donuts($17)</button>
+    <button class="items" onclick="addItem('Macarons', 19)">Macarons($19)</button>
+    <button class="items" onclick="addItem('PanCakes', 12)">PanCakes ($12)</button>
+    <button class="items" onclick="addItem('Brownies', 8)">Brownies ($8)</button>
+
+    <div id="orderSummary">
+        <h2>Order Summary</h2>
+        <table id="orderTable">
+            <thead>
+                <tr style="color:#7e1556; text-align:center;">
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+      
+        <p style="color: #7e1556; font-size: 30px; text-align: center;">Total Order Price: $<span id="totalPrice">0</span></p>
+        <p id="discountMessage" style="color:black; font-size: 20px; text-align: center;"></p>
+    </div>
+
+    <button class="confirm" onclick="confirmOrder()">Confirm Order</button>
+
+    <script>
+        const cart = [];
+
+        
+        function addItem(productName, productPrice) {
+            const quantityInput = prompt(`Enter quantity for ${productName}:`, "1");
+
+           
+            const quantity = parseInt(quantityInput) || 1; 
+            if (quantity <= 0) {
+                alert("Quantity must be at least 1.");
+                return;
+            }
+
+            // Add item to the cart array
+            cart.push({ productName, productPrice, quantity });
+
+            // Update the order table and total price
+            updateOrderSummary();
+        }
+
+        // Function to update the order summary
+        function updateOrderSummary() {
+            const orderTableBody = document.querySelector("#orderTable tbody");
+            orderTableBody.innerHTML = ""; // Clear the table
+
+            let totalPrice = 0;
+           
+            // Loop through the cart and display each item
+            cart.forEach(item => {
+                const itemTotal = item.productPrice * item.quantity;
+                totalPrice += itemTotal;
+              
+                // Create a table row for each item
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${item.productName}</td>
+                    <td>${item.quantity}</td>
+                    <td>$${item.productPrice}</td>
+                    <td>$${itemTotal}</td>
+                `;
+                orderTableBody.appendChild(row);
+            });
+
+            let discount = 0;
+        if (totalPrice > 100) {
+            discount = totalPrice * 0.40; // 40% discount
+        }
+
+        // Calculate the final price after discount
+        const finalPrice = totalPrice - discount;
+
+        // Update the total price display
+        document.getElementById("totalPrice").innerText = finalPrice.toFixed(2);
+
+        const discountMessage = discount > 0 
+            ? `You've received a 40% discount! ` : '';
+
+       
+        const discountElement = document.getElementById("discountMessage");
+        if (discountElement) {
+            discountElement.textContent = discountMessage; 
+        }
+    }
+          
+        function confirmOrder() {
+            if (cart.length === 0) {
+                alert("You have not selected any items.");
+                return;
+            }
+            alert("Your order has been confirmed!");
+           
+            console.log(cart);
+        }
+      
+    </script>
+
+</body>
+</html>
+
+
